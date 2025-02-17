@@ -197,52 +197,25 @@ __turbopack_esm__({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$core$2f$dist$2f$core$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/@dnd-kit/core/dist/core.esm.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$sortable$2f$dist$2f$sortable$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/@dnd-kit/sortable/dist/sortable.esm.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$utilities$2f$dist$2f$utilities$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/@dnd-kit/utilities/dist/utilities.esm.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_refresh__.signature();
 ;
-;
-;
-;
-const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
+const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
     _s();
-    var _s1 = __turbopack_refresh__.signature();
     const { setNodeRef, isOver } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$core$2f$dist$2f$core$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDroppable"])({
         id
     });
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "ChartArea.useEffect": ()=>{
-            if (droppedColumns.length) {
-                const newColumn = droppedColumns[droppedColumns.length - 1];
-                console.log(`Chart ${id}, dropped column: ${newColumn}`);
-            }
-        }
-    }["ChartArea.useEffect"], [
-        droppedColumns,
-        id
-    ]);
     const handleRemoveColumn = (col)=>{
         onDeleteColumn(col);
     };
+    const handleModifyColumn = (col)=>{
+        onModifyColumn(col);
+    };
     const SortableItem = ({ id, col })=>{
-        _s1();
-        const { attributes, listeners, setNodeRef, transform, transition } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$sortable$2f$dist$2f$sortable$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSortable"])({
-            id
-        });
-        const style = {
-            transform: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$utilities$2f$dist$2f$utilities$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CSS"].Transform.toString(transform),
-            transition
-        };
         const threshold = 10;
         const displayText = col.length > threshold ? col.substring(0, threshold) + '..' : col;
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            ref: setNodeRef,
-            style: style,
-            ...attributes,
-            ...listeners,
-            className: "flex items-center border border-gray-600 rounded-md  p-3 text-sm dark:hover:bg-gray-600",
+            className: "flex items-center border border-gray-600 bg-gray-800 rounded-md p-3 text-sm dark:hover:bg-gray-600",
             children: [
                 displayText,
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -251,21 +224,16 @@ const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
                     children: "X"
                 }, void 0, false, {
                     fileName: "[project]/src/components/ChartArea.tsx",
-                    lineNumber: 43,
+                    lineNumber: 31,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/ChartArea.tsx",
-            lineNumber: 35,
+            lineNumber: 29,
             columnNumber: 7
         }, this);
     };
-    _s1(SortableItem, "FTUh0JV0KNM2MI3tYtLrQh0rr1U=", false, function() {
-        return [
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$sortable$2f$dist$2f$sortable$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSortable"]
-        ];
-    });
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "bg-gray-800 bg-opacity-85 p-4 rounded shadow-lg w-full",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -282,7 +250,7 @@ const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
                             children: "Wybierz typ wykresu"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ChartArea.tsx",
-                            lineNumber: 61,
+                            lineNumber: 49,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -290,7 +258,7 @@ const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
                             children: "Bar"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ChartArea.tsx",
-                            lineNumber: 64,
+                            lineNumber: 52,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -298,7 +266,7 @@ const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
                             children: "Line"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ChartArea.tsx",
-                            lineNumber: 65,
+                            lineNumber: 53,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -306,7 +274,7 @@ const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
                             children: "Pie"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ChartArea.tsx",
-                            lineNumber: 66,
+                            lineNumber: 54,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -314,7 +282,7 @@ const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
                             children: "Scatter"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ChartArea.tsx",
-                            lineNumber: 67,
+                            lineNumber: 55,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -322,7 +290,7 @@ const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
                             children: "Area"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ChartArea.tsx",
-                            lineNumber: 68,
+                            lineNumber: 56,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -330,52 +298,54 @@ const ChartArea = ({ id, title, droppedColumns, onDeleteColumn })=>{
                             children: "Radar"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ChartArea.tsx",
-                            lineNumber: 69,
+                            lineNumber: 57,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/ChartArea.tsx",
-                    lineNumber: 56,
+                    lineNumber: 44,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     ref: setNodeRef,
-                    className: `flex flex-wrap gap-2 w-full rounded-lg justify-center transition-colors ${isOver ? "bg-gray-500" : ""}`,
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$sortable$2f$dist$2f$sortable$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SortableContext"], {
-                        items: droppedColumns,
-                        strategy: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$sortable$2f$dist$2f$sortable$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["horizontalListSortingStrategy"],
-                        children: droppedColumns.map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SortableItem, {
+                    className: `flex flex-wrap gap-2 w-full rounded-lg items-center justify-center transition-colors ${isOver ? "bg-gray-500" : ""}`,
+                    children: [
+                        droppedColumns.map((col)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SortableItem, {
                                 id: col,
                                 col: col
                             }, col, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 77,
+                                lineNumber: 64,
                                 columnNumber: 15
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/ChartArea.tsx",
-                        lineNumber: 75,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
+                            }, this)),
+                        droppedColumns.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                            className: "text-sm opacity-80",
+                            children: "(Drop columns here)"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/ChartArea.tsx",
+                            lineNumber: 66,
+                            columnNumber: 43
+                        }, this) : null
+                    ]
+                }, void 0, true, {
                     fileName: "[project]/src/components/ChartArea.tsx",
-                    lineNumber: 71,
+                    lineNumber: 59,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/ChartArea.tsx",
-            lineNumber: 55,
+            lineNumber: 43,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/ChartArea.tsx",
-        lineNumber: 54,
+        lineNumber: 42,
         columnNumber: 5
     }, this);
 };
-_s(ChartArea, "q1wibsXwa4ejqu6ZNx6wqX8xK+w=", false, function() {
+_s(ChartArea, "DmJTTt6A5xWIX/faBiFge3FOLrw=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$core$2f$dist$2f$core$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDroppable"]
     ];
@@ -411,47 +381,54 @@ var _s = __turbopack_refresh__.signature();
 ;
 const DataVisualize = ({ file, columns, onDelete })=>{
     _s();
-    // Maintain dropped columns per chart.
     const [chartColumns, setChartColumns] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         chart1: [],
         chart2: [],
         chart3: [],
         chart4: []
     });
-    // onDragEnd will be called when a draggable item (a column) is dropped.
     const handleDragEnd = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "DataVisualize.useCallback[handleDragEnd]": (event)=>{
             const { active, over } = event;
-            if (over && typeof over.id === "string" && chartColumns.hasOwnProperty(over.id)) {
-                setChartColumns({
-                    "DataVisualize.useCallback[handleDragEnd]": (prev)=>{
-                        const newCols = {
-                            ...prev
-                        };
-                        if (!newCols[over.id].includes(active.id)) {
-                            if (newCols[over.id].length < 4) {
-                                newCols[over.id] = [
-                                    ...newCols[over.id],
-                                    active.id
-                                ];
-                            }
+            setChartColumns({
+                "DataVisualize.useCallback[handleDragEnd]": (prev)=>{
+                    const updatedChartColumns = {
+                        ...prev
+                    };
+                    // Add Logic (if over exists)
+                    if (over && over.id in updatedChartColumns && active) {
+                        const chartId = over.id;
+                        const activeId = active.id;
+                        if (updatedChartColumns[chartId].length < 4 && !updatedChartColumns[chartId].includes(activeId)) {
+                            updatedChartColumns[chartId] = [
+                                ...updatedChartColumns[chartId],
+                                activeId
+                            ];
                         }
-                        return newCols;
+                        return updatedChartColumns; //return the updated state
                     }
-                }["DataVisualize.useCallback[handleDragEnd]"]);
-            }
+                    return prev; // Important: Return previous state if no changes are made
+                }
+            }["DataVisualize.useCallback[handleDragEnd]"]);
         }
     }["DataVisualize.useCallback[handleDragEnd]"], [
         chartColumns
-    ] // Dodaj zależności, które funkcja wykorzystuje
-    );
+    ]);
+    const handleDeleteColumn = (chartId, column)=>{
+        console.log(`Deleting column ${column} from chart ${chartId}`);
+        setChartColumns((prev)=>({
+                ...prev,
+                [chartId]: prev[chartId].filter((c)=>c !== column)
+            }));
+    };
+    const chartIds = Object.keys(chartColumns);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex w-full h-screen",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$core$2f$dist$2f$core$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DndContext"], {
             onDragEnd: handleDragEnd,
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "w-1/5 bg-gray-800 bg-opacity-85 p-4 ",
+                    className: "w-1/5 bg-gray-800 bg-opacity-85 p-4",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                             className: "text-xl font-semibold text-white text-center",
@@ -459,21 +436,21 @@ const DataVisualize = ({ file, columns, onDelete })=>{
                                 file.name,
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                     fileName: "[project]/src/components/DataVisualize.tsx",
-                                    lineNumber: 58,
-                                    columnNumber: 81
+                                    lineNumber: 64,
+                                    columnNumber: 13
                                 }, this),
                                 "Columns"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/DataVisualize.tsx",
-                            lineNumber: 58,
-                            columnNumber: 9
+                            lineNumber: 62,
+                            columnNumber: 11
                         }, this),
                         columns.map((element)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Columns$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                 element: element
                             }, element, false, {
                                 fileName: "[project]/src/components/DataVisualize.tsx",
-                                lineNumber: 60,
+                                lineNumber: 68,
                                 columnNumber: 13
                             }, this)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -482,92 +459,48 @@ const DataVisualize = ({ file, columns, onDelete })=>{
                             children: "Upload Another File"
                         }, void 0, false, {
                             fileName: "[project]/src/components/DataVisualize.tsx",
-                            lineNumber: 62,
-                            columnNumber: 9
+                            lineNumber: 70,
+                            columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/DataVisualize.tsx",
-                    lineNumber: 57,
-                    columnNumber: 7
+                    lineNumber: 61,
+                    columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "w-4/5 px-4 flex items-center justify-center ",
+                    className: "w-4/5 px-4 flex items-center justify-center",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "grid grid-cols-2 gap-3 w-full h-full  ",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ChartArea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                id: "chart1",
-                                title: "Chart 1",
-                                droppedColumns: chartColumns.chart1,
-                                onDeleteColumn: (column)=>setChartColumns((prev)=>({
-                                            ...prev,
-                                            chart1: prev.chart1.filter((c)=>c !== column)
-                                        }))
-                            }, void 0, false, {
+                        className: "grid grid-cols-2 gap-3 w-full h-full",
+                        children: chartIds.map((chartId)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ChartArea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                id: chartId,
+                                droppedColumns: chartColumns[chartId],
+                                onDeleteColumn: (column)=>handleDeleteColumn(chartId, column),
+                                onModifyColumn: (column)=>handleDeleteColumn(chartId, column)
+                            }, chartId, false, {
                                 fileName: "[project]/src/components/DataVisualize.tsx",
-                                lineNumber: 73,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ChartArea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                id: "chart2",
-                                title: "Chart 2",
-                                droppedColumns: chartColumns.chart2,
-                                onDeleteColumn: (column)=>setChartColumns((prev)=>({
-                                            ...prev,
-                                            chart2: prev.chart2.filter((c)=>c !== column)
-                                        }))
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/DataVisualize.tsx",
-                                lineNumber: 84,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ChartArea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                id: "chart3",
-                                title: "Chart 3",
-                                droppedColumns: chartColumns.chart3,
-                                onDeleteColumn: (column)=>setChartColumns((prev)=>({
-                                            ...prev,
-                                            chart3: prev.chart3.filter((c)=>c !== column)
-                                        }))
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/DataVisualize.tsx",
-                                lineNumber: 95,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ChartArea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                id: "chart4",
-                                title: "Chart 4",
-                                droppedColumns: chartColumns.chart4,
-                                onDeleteColumn: (column)=>setChartColumns((prev)=>({
-                                            ...prev,
-                                            chart4: prev.chart4.filter((c)=>c !== column)
-                                        }))
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/DataVisualize.tsx",
-                                lineNumber: 106,
-                                columnNumber: 13
-                            }, this)
-                        ]
-                    }, void 0, true, {
+                                lineNumber: 81,
+                                columnNumber: 15
+                            }, this))
+                    }, void 0, false, {
                         fileName: "[project]/src/components/DataVisualize.tsx",
-                        lineNumber: 72,
-                        columnNumber: 13
+                        lineNumber: 79,
+                        columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/DataVisualize.tsx",
-                    lineNumber: 71,
+                    lineNumber: 78,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/DataVisualize.tsx",
-            lineNumber: 56,
-            columnNumber: 11
+            lineNumber: 60,
+            columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/DataVisualize.tsx",
-        lineNumber: 54,
+        lineNumber: 59,
         columnNumber: 5
     }, this);
 };
@@ -715,7 +648,7 @@ const FileUpload = ()=>{
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex flex-col h-[85vh] my-2 items-center justify-center ",
+        className: "flex flex-col h-[83vh] my-2 items-center justify-center ",
         children: columns.length > 0 && selectedFile ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$DataVisualize$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
             file: selectedFile,
             columns: columns,
@@ -725,7 +658,7 @@ const FileUpload = ()=>{
             lineNumber: 63,
             columnNumber: 9
         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "bg-gray-600 dark:bg-gray-900 p-6 rounded-lg shadow-lg w-1/2 text-center mt-20",
+            className: "bg-gray-600 dark:bg-gray-900 p-6 rounded-lg shadow-lg w-1/2 text-center",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                     className: "text-xl font-semibold text-white",

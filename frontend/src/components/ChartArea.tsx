@@ -5,40 +5,28 @@ import { CSS } from '@dnd-kit/utilities';
 
 interface ChartAreaProps {
   id: string;
-  title: string;
   droppedColumns: string[];
   onDeleteColumn: (col: string) => void;
+  onModifyColumn: (col: string) => void;
+
 }
 
-const ChartArea: React.FC<ChartAreaProps> = ({ id, title, droppedColumns, onDeleteColumn }) => {
+const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColumn, onModifyColumn }) => {
   const { setNodeRef, isOver } = useDroppable({ id });
-
-  useEffect(() => {
-    if (droppedColumns.length) {
-      const newColumn = droppedColumns[droppedColumns.length - 1];
-      console.log(`Chart ${id}, dropped column: ${newColumn}`);
-    }
-  }, [droppedColumns, id]);
 
   const handleRemoveColumn = (col: string) => {
     onDeleteColumn(col);
   };
+  const handleModifyColumn = (col: string) => {
+    onModifyColumn(col);
+  }
 
   const SortableItem: React.FC<{ id: string; col: string }> = ({ id, col }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
-    const style = { transform: CSS.Transform.toString(transform), transition };
-
     const threshold = 10;
     const displayText = col.length > threshold ? col.substring(0, threshold) + '..' : col;
 
     return (
-      <div
-        ref={setNodeRef}
-        style={style}
-        {...attributes}
-        {...listeners}
-        className="flex items-center border border-gray-600 rounded-md  p-3 text-sm dark:hover:bg-gray-600"
-      >
+      <div className="flex items-center border border-gray-600 bg-gray-800 rounded-md p-3 text-sm dark:hover:bg-gray-600">
         {displayText}
         <button
           onClick={() => handleRemoveColumn(col)}
@@ -70,13 +58,12 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, title, droppedColumns, onDele
         </select>
         <div
           ref={setNodeRef}
-          className={`flex flex-wrap gap-2 w-full rounded-lg justify-center transition-colors ${isOver ? "bg-gray-500" : ""}`}
+          className={`flex flex-wrap gap-2 w-full rounded-lg items-center justify-center transition-colors ${isOver ? "bg-gray-500" : ""}`}
         >
-          <SortableContext items={droppedColumns} strategy={horizontalListSortingStrategy}>
             {droppedColumns.map((col) => (
               <SortableItem key={col} id={col} col={col} />
             ))}
-          </SortableContext>
+            {droppedColumns.length === 0? <h2 className='text-sm opacity-80'>(Drop columns here)</h2> : null}
         </div>
       </div>
     </div>

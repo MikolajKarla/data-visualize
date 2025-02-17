@@ -1,4 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
@@ -15,7 +14,7 @@
 
 # next.js
 frontend/.next/
-/out/
+frontend/out/  # Dodano /out/ dla Next.js
 
 # production
 /build
@@ -38,44 +37,46 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+frontend/next-env.d.ts  # Dodano prefix frontend/
 
 # Python
-__pycache__/
-*.py[cod]
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
-*.pyc
-*.pyo
-*.pyd
-*.env
-*.venv
-venv/
-ENV/
-env/
-env.bak/
-venv.bak/
-pip-log.txt
-pip-delete-this-directory.txt
-*.log
+backend/__pycache__/  # Dodano prefix backend/
+backend/*.py[cod]
+backend/*.so
+backend/*.egg
+backend/*.egg-info/
+backend/dist/
+backend/build/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/*.env
+backend/*.venv
+backend/venv/
+backend/ENV/
+backend/env/
+backend/env.bak/
+backend/venv.bak/
+backend/pip-log.txt
+backend/pip-delete-this-directory.txt
+backend/*.log
 
-# FastAPI
+# FastAPI  (Już zdefiniowane powyżej, ale dla czytelności można zostawić)
 instance/
-*.db
-*.sqlite3
+backend/*.db
+backend/*.sqlite3
 
-# Frontend
-/build/
-dist/
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# Frontend (Już zdefiniowane powyżej, ale dla czytelności można zostawić)
+# /build/
+# dist/
+# node_modules/
+# npm-debug.log*
+# yarn-debug.log*
+# yarn-error.log*
+# .pnpm-debug.log*
+
 # Custom ignores for data-visualize-app
+backend/uploads/  # Ważne: Dodano ukośnik, aby ignorować folder i jego zawartość
 
 # Generated reports, figures, and screenshots
 /reports/
@@ -89,22 +90,21 @@ yarn-error.log*
 # Local log files
 *.local.log
 
-# ---------------------------
-# Additional ignores for backend (FastAPI) and frontend (Next.js)
-
-# Backend folder (FastAPI)
-backend/__pycache__/
-backend/*.py[cod]
-backend/*.pyo
-backend/*.pyd
-backend/*.env
-backend/*.venv
-backend/venv/
-backend/env/
-backend/env.bak/
-
-# Frontend folder (Next.js)
+# Dodano specyficzne pliki z listy (z uwzględnieniem ścieżek)
+frontend/app-build-manifest.json
+frontend/build-manifest.json
+frontend/fallback-build-manifest.json
+frontend/trace
+frontend/node_modules
 frontend/.next/
-frontend/out/
-frontend/node_modules/
-frontend/.env*
+frontend/.next/cache/
+frontend/app-paths-manifest.json
+frontend/middleware-build-manifest.js
+frontend/next-font-manifest.js
+frontend/next-font-manifest.json
+frontend/page_client-reference-manifest.json
+frontend/app-build-manifest.json  # Duplikat, można usunąć
+frontend/server/app/page-manifest.json
+frontend/server/app/route-group-manifest.json
+frontend/server/chunks/ssr/*.map   # Uproszczona forma ignorowania map
+frontend/server/static/chunks/*.map # Uproszczona forma ignorowania map

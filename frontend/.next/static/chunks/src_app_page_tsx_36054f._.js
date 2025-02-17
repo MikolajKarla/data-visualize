@@ -9,7 +9,7 @@
     "static/chunks/node_modules_react-icons_io_index_mjs_d35cf4._.js",
     "static/chunks/node_modules_react-icons_rx_index_mjs_ecd194._.js",
     "static/chunks/node_modules_react-icons_lib_74ccc9._.js",
-    "static/chunks/node_modules_6fe176._.js",
+    "static/chunks/node_modules_1d59d7._.js",
     "static/chunks/src_514c19._.js"
   ],
   "source": "dynamic"

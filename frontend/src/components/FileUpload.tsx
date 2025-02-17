@@ -58,11 +58,11 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="flex flex-col h-[85vh] my-2 items-center justify-center ">
+    <div className="flex flex-col h-[83vh] my-2 items-center justify-center ">
       {columns.length > 0 && selectedFile ?  ( // Show uploaded columns
         <DataVisualize file={selectedFile} columns={columns} onDelete={handleDeleteFile} />
       ) : ( // Show upload form
-        <div className="bg-gray-600 dark:bg-gray-900 p-6 rounded-lg shadow-lg w-1/2 text-center mt-20">
+        <div className="bg-gray-600 dark:bg-gray-900 p-6 rounded-lg shadow-lg w-1/2 text-center">
           <h2 className="text-xl font-semibold text-white">Upload your file</h2>
 
           <label
