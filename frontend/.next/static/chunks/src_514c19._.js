@@ -198,8 +198,10 @@ __turbopack_esm__({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$core$2f$dist$2f$core$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/@dnd-kit/core/dist/core.esm.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$sl$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react-icons/sl/index.mjs [app-client] (ecmascript)");
 ;
 var _s = __turbopack_refresh__.signature();
+;
 ;
 ;
 const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
@@ -210,6 +212,8 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
     const [chartType, setChartType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [chartImageUrl, setChartImageUrl] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [chartError, setChartError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [isFullScreen, setFullScreen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const handleRemoveColumn = (col)=>{
         onDeleteColumn(col);
     };
@@ -218,7 +222,25 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ChartArea.useEffect": ()=>{
+            const handleKeyDown = {
+                "ChartArea.useEffect.handleKeyDown": (event)=>{
+                    if (event.key === 'Escape' && isFullScreen) {
+                        setFullScreen(false);
+                    }
+                }
+            }["ChartArea.useEffect.handleKeyDown"];
+            window.addEventListener('keydown', handleKeyDown);
+            return ({
+                "ChartArea.useEffect": ()=>window.removeEventListener('keydown', handleKeyDown)
+            })["ChartArea.useEffect"];
+        }
+    }["ChartArea.useEffect"], [
+        isFullScreen
+    ]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ChartArea.useEffect": ()=>{
             if (chartType !== '' && droppedColumns.length > 1) {
+                setLoading(true);
                 setChartError(null);
                 setChartImageUrl(null);
                 const columns = {
@@ -258,6 +280,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                     }
                 }["ChartArea.useEffect"]).then({
                     "ChartArea.useEffect": (result)=>{
+                        setLoading(false);
                         if (result.isImage) {
                             const imageUrl = URL.createObjectURL(result.blob);
                             console.log('Received chart image URL:', imageUrl);
@@ -280,7 +303,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
         chartType,
         id
     ]);
-    const SortableItem = ({ id, col })=>{
+    const SortableItem = ({ col })=>{
         const threshold = 10;
         const displayText = col.length > threshold ? col.substring(0, threshold) + '..' : col;
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -293,13 +316,13 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                     children: "X"
                 }, void 0, false, {
                     fileName: "[project]/src/components/ChartArea.tsx",
-                    lineNumber: 71,
+                    lineNumber: 87,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/ChartArea.tsx",
-            lineNumber: 69,
+            lineNumber: 85,
             columnNumber: 7
         }, this);
     };
@@ -320,7 +343,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                 children: "Wybierz typ wykresu"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 86,
+                                lineNumber: 102,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -328,7 +351,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                 children: "Bar"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 89,
+                                lineNumber: 105,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -336,7 +359,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                 children: "Line"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 90,
+                                lineNumber: 106,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -344,7 +367,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                 children: "Pie"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 91,
+                                lineNumber: 107,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -352,7 +375,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                 children: "Scatter"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 92,
+                                lineNumber: 108,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -360,7 +383,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                 children: "Area"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 93,
+                                lineNumber: 109,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -368,13 +391,13 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                 children: "Radar"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 94,
+                                lineNumber: 110,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/ChartArea.tsx",
-                        lineNumber: 81,
+                        lineNumber: 97,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -386,7 +409,7 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                     col: col
                                 }, col, false, {
                                     fileName: "[project]/src/components/ChartArea.tsx",
-                                    lineNumber: 101,
+                                    lineNumber: 117,
                                     columnNumber: 13
                                 }, this)),
                             droppedColumns.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -394,54 +417,174 @@ const ChartArea = ({ id, droppedColumns, onDeleteColumn, onModifyColumn })=>{
                                 children: "(Drop columns here)"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ChartArea.tsx",
-                                lineNumber: 103,
+                                lineNumber: 119,
                                 columnNumber: 43
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/ChartArea.tsx",
-                        lineNumber: 96,
+                        lineNumber: 112,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/ChartArea.tsx",
-                lineNumber: 80,
+                lineNumber: 96,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "chart flex justify-center h-full items-center mx-auto ",
+                className: "chart flex justify-center   h-full items-center mx-auto ",
                 children: [
-                    chartImageUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                        src: chartImageUrl,
-                        alt: "Chart"
-                    }, void 0, false, {
+                    loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center mt-4 text-white",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                className: "animate-spin h-5 w-5 mr-3 text-white",
+                                viewBox: "0 0 24 24",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("circle", {
+                                        className: "opacity-25",
+                                        cx: "12",
+                                        cy: "12",
+                                        r: "10",
+                                        stroke: "currentColor",
+                                        strokeWidth: "4"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/ChartArea.tsx",
+                                        lineNumber: 127,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                        className: "opacity-75",
+                                        fill: "currentColor",
+                                        d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/ChartArea.tsx",
+                                        lineNumber: 128,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/ChartArea.tsx",
+                                lineNumber: 126,
+                                columnNumber: 13
+                            }, this),
+                            "Loading..."
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/components/ChartArea.tsx",
-                        lineNumber: 107,
-                        columnNumber: 27
-                    }, this),
+                        lineNumber: 125,
+                        columnNumber: 11
+                    }, this) : null,
+                    chartImageUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "relative",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                src: chartImageUrl,
+                                alt: "Chart",
+                                className: "w-full h-full object-contain"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/ChartArea.tsx",
+                                lineNumber: 135,
+                                columnNumber: 5
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "absolute top-0 right-0 p-1 cursor-pointer z-50 flex items-center justify-center",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$sl$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SlSizeFullscreen"], {
+                                    onClick: ()=>setFullScreen(true),
+                                    className: "text-4xl text-white bg-black bg-opacity-65 rounded-md p-2"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/ChartArea.tsx",
+                                    lineNumber: 137,
+                                    columnNumber: 7
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/ChartArea.tsx",
+                                lineNumber: 136,
+                                columnNumber: 5
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/ChartArea.tsx",
+                        lineNumber: 134,
+                        columnNumber: 3
+                    }, this) : null,
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "text-red-500 mt-4",
                         children: chartError
                     }, void 0, false, {
                         fileName: "[project]/src/components/ChartArea.tsx",
-                        lineNumber: 109,
+                        lineNumber: 141,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/ChartArea.tsx",
-                lineNumber: 106,
+                lineNumber: 122,
                 columnNumber: 7
-            }, this)
+            }, this),
+            isFullScreen ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000
+                },
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                        src: chartImageUrl ?? "",
+                        alt: "Chart Fullscreen",
+                        style: {
+                            maxWidth: '90vw',
+                            maxHeight: '90vh',
+                            objectFit: 'contain'
+                        }
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ChartArea.tsx",
+                        lineNumber: 161,
+                        columnNumber: 5
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        style: {
+                            position: 'absolute',
+                            top: '20px',
+                            right: '20px',
+                            cursor: 'pointer',
+                            zIndex: 1001
+                        },
+                        onClick: ()=>setFullScreen(false),
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$sl$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SlSizeActual"], {
+                            className: "text-4xl text-white"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/ChartArea.tsx",
+                            lineNumber: 176,
+                            columnNumber: 7
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ChartArea.tsx",
+                        lineNumber: 166,
+                        columnNumber: 5
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/ChartArea.tsx",
+                lineNumber: 147,
+                columnNumber: 3
+            }, this) : null
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/ChartArea.tsx",
-        lineNumber: 79,
+        lineNumber: 95,
         columnNumber: 5
     }, this);
 };
-_s(ChartArea, "6P5ehr0Y2qGJTJrhPk3FDsGBabU=", false, function() {
+_s(ChartArea, "Cdg2HtXtgB+OS0UerCFIiUkQIsA=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$core$2f$dist$2f$core$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDroppable"]
     ];

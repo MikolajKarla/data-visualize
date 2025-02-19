@@ -6,7 +6,7 @@ backend/venv
 
 # Python bytecode cache
 backend/__pycache__
-
+backen/uploads
 # Next.js build output
 frontend/.next
 
@@ -15,11 +15,11 @@ uploads/*
 !uploads/.gitkeep # If you want to keep the uploads folder in the repo but ignore content except .gitkeep
 
 # Docker build artifacts
-dockerPyVisualise
+dockerPyVisualise/
 
 # Lock files for dependencies - generally good to include these for consistency, but can be excluded if needed
-# package-lock.json
-# yarn.lock
+package-lock.json
+yarn.lock
 
 # Environment variable files
 *.env

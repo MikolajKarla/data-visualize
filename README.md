@@ -4,8 +4,8 @@ Witaj w aplikacji, która umożliwia wizualizację oraz normalizację danych! Pr
 
 # TODO
 
-- dodac wykresy podczas zmiany
-- pokazywac liczbe obiektow i dodac usuwanie lub zastępywanie pustych miejsc w kolumnach
+- dodac wykresy pozostałe
+- pokazywac liczbe pustych wartosci i dodac usuwanie lub zastępywanie pustych miejsc w kolumnach
 - możliwość przesuwania horyzontalnego kolumn w danym wykresie
 
 

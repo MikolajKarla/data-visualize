@@ -2,6 +2,7 @@ import { useDroppable } from '@dnd-kit/core';
 import React, { useEffect, useState } from 'react';
 import { useSortable, SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { SlSizeFullscreen, SlSizeActual } from "react-icons/sl";
 
 interface ChartAreaProps {
   id: string;
@@ -15,6 +16,8 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
   const [chartType, setChartType] = useState<string>('');
   const [chartImageUrl, setChartImageUrl] = useState<string | null>(null);
   const [chartError, setChartError] = useState<string | null>(null);
+  const [isFullScreen, setFullScreen] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const handleRemoveColumn = (col: string) => {
     onDeleteColumn(col);
   };
@@ -24,7 +27,19 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
   };
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isFullScreen) {
+        setFullScreen(false);
+      }
+    };
+  
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFullScreen]);
+  
+  useEffect(() => {
     if (chartType !== '' && droppedColumns.length > 1) {
+      setLoading(true);
       setChartError(null);
       setChartImageUrl(null);
       const columns = {
@@ -46,6 +61,7 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
           }
         })
         .then(result => {
+          setLoading(false);
           if (result.isImage) {
             const imageUrl = URL.createObjectURL(result.blob);
             console.log('Received chart image URL:', imageUrl);
@@ -62,7 +78,7 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
     }
   }, [droppedColumns, chartType, id]);
 
-  const SortableItem: React.FC<{ id: string; col: string }> = ({ id, col }) => {
+  const SortableItem: React.FC<{ id: string; col: string }> = ({col }) => {
     const threshold = 10;
     const displayText = col.length > threshold ? col.substring(0, threshold) + '..' : col;
     return (
@@ -103,14 +119,65 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
           {droppedColumns.length === 0 && <h2 className="text-sm opacity-80">(Drop columns here)</h2>}
         </div>
       </div>
-      <div className="chart flex justify-center h-full items-center mx-auto ">
-        {chartImageUrl && <img src={chartImageUrl} alt="Chart" />}
-
+      <div className="chart flex justify-center
+       h-full items-center mx-auto ">
+        {loading ? (
+          <div className="flex items-center mt-4 text-white">
+            <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            Loading...
+          </div>
+        ) : null}
+        {chartImageUrl ? (
+  <div className="relative">
+    <img src={chartImageUrl} alt="Chart" className="w-full h-full object-contain" />
+    <div className="absolute top-0 right-0 p-1 cursor-pointer z-50 flex items-center justify-center">
+      <SlSizeFullscreen onClick={()=>setFullScreen(true)} className="text-4xl text-white bg-black bg-opacity-65 rounded-md p-2" />
+    </div>
+  </div>
+) : null}
         <div className="text-red-500 mt-4">
           {chartError }
         </div>
 
       </div>
+  {isFullScreen ? (
+  <div
+    style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      backgroundColor: 'rgba(0, 0, 0, 0.9)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 1000,
+    }}
+  >
+    <img
+      src={chartImageUrl ?? ""}
+      alt="Chart Fullscreen"
+      style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }}
+    />
+    <div
+      style={{
+        position: 'absolute',
+        top: '20px',
+        right: '20px',
+        cursor: 'pointer',
+        zIndex: 1001,
+      }}
+      onClick={() => setFullScreen(false)}
+    >
+      <SlSizeActual className="text-4xl text-white" />
+    </div>
+  </div>
+  ) : null}
+
     </div>
   );
 };
