@@ -3,15 +3,16 @@ FROM node:18-alpine
 # Ustaw katalog roboczy
 WORKDIR /app
 
-# Skopiuj pliki
+# Skopiuj pliki package.json i package-lock.json
+# Robimy to jako pierwszy krok, aby wykorzystać cache Dockera.
+# Zależności instalowane są tylko, gdy te pliki się zmienią.
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Skopiuj resztę plików
+# Skopiuj resztę plików aplikacji
+# Dzięki mapowaniu woluminów w docker-compose.yml,
+# zmiany w tych plikach na hoście będą widoczne w kontenerze.
 COPY . .
 
-# Zbuduj aplikację
-RUN npm run dev
-
-# Uruchomienie aplikacji Next.js
-CMD ["npm", "run", "start"]
+# W trybie deweloperskim, to jest komenda, która uruchamia serwer deweloperski
+CMD ["npm", "run", "dev"]

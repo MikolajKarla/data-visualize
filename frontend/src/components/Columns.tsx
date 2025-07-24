@@ -1,7 +1,6 @@
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
-import { RxDragHandleDots2 } from "react-icons/rx";
-import { IoMdSettings } from "react-icons/io";
+import { GripVertical, Database } from "lucide-react";
 import { useDraggable } from "@dnd-kit/core";
 
 function Columns({ element }: { element: string }) {
@@ -9,7 +8,6 @@ function Columns({ element }: { element: string }) {
     id: element,
   });
 
-  // Stylizacja elementu z uwzględnieniem stanu przeciągania
   const style = {
     transform: CSS.Translate.toString(transform),
   };
@@ -18,23 +16,32 @@ function Columns({ element }: { element: string }) {
     <div
       ref={setNodeRef}
       style={style}
-      className={`border border-gray-900 rounded-md w-full mt-2 pl-4 pr-2 dark:hover:bg-gray-600 py-2 flex items-center justify-between ${
-        isDragging ? "cursor-grabbing" : "cursor-grab"} 
-        position-${  isDragging ? "relative" : "inherit"}
-        z-${isDragging ? "50" : "auto"
+      className={`group relative bg-card border border-border rounded-xl p-2 lg:p-3 transition-all duration-200 ${
+        isDragging 
+          ? "cursor-grabbing shadow-lg scale-105 z-999  bg-accent border-primary" 
+          : "cursor-grab hover:bg-accent/50 hover:border-primary/30 hover:shadow-md"
       }`}
     >
-      <p>{element}</p>
-      <div className="flex gap-3">
-        <div className="settings my-auto">
-          <IoMdSettings size={16} />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 lg:gap-3 flex-1 min-w-0">
+          <div className="p-1 lg:p-1.5 bg-primary/10 rounded-lg">
+            <Database size={14} className="text-primary lg:w-4 lg:h-4" />
+          </div>
+          <p className="font-medium text-foreground truncate text-xs lg:text-sm">
+            {element}
+          </p>
         </div>
+        
         <div
-          className="handle my-auto cursor-grab"
+          className={`p-1 lg:p-1.5 rounded-lg transition-all duration-200 ${
+            isDragging 
+              ? "bg-primary text-primary-foreground" 
+              : "text-muted-foreground hover:text-foreground hover:bg-accent group-hover:bg-accent"
+          }`}
           {...attributes}
           {...listeners}
         >
-          <RxDragHandleDots2 size={22} />
+          <GripVertical size={14} className="lg:w-4 lg:h-4" />
         </div>
       </div>
     </div>

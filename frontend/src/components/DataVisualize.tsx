@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import Columns from "./Columns";
 import ChartArea from "./ChartArea";
+import { FileText, ArrowLeft } from "lucide-react";
 
 interface DataVisualizeProps {
   file: File;
@@ -11,7 +12,7 @@ interface DataVisualizeProps {
 }
 
 interface ChartColumns {
-  [chartId: string]: string[]; // Use index signature for flexibility
+  [chartId: string]: string[];
 }
 
 const DataVisualize: React.FC<DataVisualizeProps> = ({ file, columns, onDelete }) => {
@@ -22,13 +23,11 @@ const DataVisualize: React.FC<DataVisualizeProps> = ({ file, columns, onDelete }
     chart4: [],
   });
 
- 
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
 
     setChartColumns((prev) => {
       const updatedChartColumns = { ...prev };
-      // Add Logic (if over exists)
       if (over && over.id in updatedChartColumns && active) {
         const chartId = over.id as keyof ChartColumns;
         const activeId = active.id as string;
@@ -39,54 +38,95 @@ const DataVisualize: React.FC<DataVisualizeProps> = ({ file, columns, onDelete }
         ) {
           updatedChartColumns[chartId] = [...updatedChartColumns[chartId], activeId];
         }
-        return updatedChartColumns; //return the updated state
+        return updatedChartColumns;
       }
-      return prev; // Important: Return previous state if no changes are made
+      return prev;
     });
-  }, [chartColumns]);
+  }, []);
 
   const handleDeleteColumn = (chartId: string, column: string) => {
-    console.log(`Deleting column ${column} from chart ${chartId}`);
     setChartColumns((prev) => ({
-        ...prev,
-        [chartId]: prev[chartId].filter((c) => c !== column),
+      ...prev,
+      [chartId]: prev[chartId].filter((c) => c !== column),
     }));
-};
+  };
+
   const chartIds = Object.keys(chartColumns);
 
-
   return (
-    <div className="flex w-full h-screen">
+    <div className="w-full min-h-screen bg-background">
       <DndContext onDragEnd={handleDragEnd}>
-        <div className="w-1/5 bg-gray-800 bg-opacity-85 p-4">
-          <h2 className="text-xl font-semibold text-white text-center">
-            {file.name}
-            <br />
-            Columns
-          </h2>
-          {columns.map((element) => (
-            <Columns key={element} element={element} />
-          ))}
-          <Button
-            className="mt-4 px-6 py-2 dark:bg-gray-700 dark:hover:bg-gray-600 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all w-full"
-            onClick={onDelete}
-          >
-            Upload Another File
-          </Button>
-        </div>
+        <div className="flex flex-col lg:flex-row min-h-screen">
+          {/* Sidebar */}
+          <div className="w-full lg:w-80 bg-card border-b lg:border-b-0 lg:border-r border-border flex flex-col max-h-[40vh] lg:max-h-none">
+            {/* Header */}
+            <div className="p-4 lg:p-6 border-b border-border bg-gradient-to-r from-primary/5 to-primary/10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-primary/10 rounded-xl">
+                  <FileText className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-lg font-semibold text-foreground truncate">
+                    {file.name}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    {columns.length} columns available
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={onDelete}
+                variant="outline"
+                className="w-full gap-2 hover:bg-accent border-border"
+              >
+                <ArrowLeft size={16} />
+                Upload Different File
+              </Button>
+            </div>
 
-        <div className="w-4/5 px-4 flex items-center justify-center">
-          <div className="grid grid-cols-2 gap-3 w-full h-full">
-          {chartIds.map((chartId) => (
-              <ChartArea
-                key={chartId}
-                id={chartId}
-                droppedColumns={chartColumns[chartId]}
-                onDeleteColumn={(column) => handleDeleteColumn(chartId, column)} // Call handleDeleteColumn directly
-                onModifyColumn={(column) => handleDeleteColumn(chartId, column)} // Call handleDeleteColumn directly
+            {/* Columns List */}
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="mb-4">
+                <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
+                  Available Columns
+                </h3>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Drag columns to chart areas to create visualizations
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-1">
+                {columns.map((element) => (
+                  <Columns key={element} element={element} />
+                ))}
+              </div>
+            </div>
+          </div>
 
-              />
-            ))}
+          {/* Main Content */}
+          <div className="flex-1 p-4 lg:p-6 bg-gradient-to-br from-background to-secondary/5 min-h-[60vh] lg:min-h-0">
+            <div className="h-full">
+              <div className="mb-4 lg:mb-6">
+                <h1 className="text-xl lg:text-2xl font-bold text-foreground mb-2">
+                  Data Visualization Dashboard
+                </h1>
+                <p className="text-sm lg:text-base text-muted-foreground">
+                  Create up to 4 different charts by dragging columns from above
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6 min-h-[400px] lg:h-[calc(100%-100px)]">
+                {chartIds.map((chartId) => (
+                  <ChartArea
+                    key={chartId}
+                    id={chartId}
+                    droppedColumns={chartColumns[chartId]}
+                    onDeleteColumn={(column) => handleDeleteColumn(chartId, column)}
+                    onModifyColumn={(column) => handleDeleteColumn(chartId, column)}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </DndContext>

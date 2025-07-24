@@ -31,9 +31,9 @@ yarn.lock
 # Data files - assuming these are not core source code
 *.csv
 *.data
+backend/uploads
 
 # OS generated files
 .DS_Store
 Thumbs.db
 
-# Other temporary files or folders (adjust as needed)

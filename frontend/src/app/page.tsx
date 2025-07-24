@@ -1,22 +1,40 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import FileUpload from "@/components/FileUpload";
-import Menu from "@/components/Menu";
+import Navbar from "@/components/Navbar";
+
+function getInitialTheme() {
+  if (typeof window === "undefined") return "dark";
+  return localStorage.getItem("theme") || "dark";
+}
 
 export default function Home() {
+  const [theme, setTheme] = useState(getInitialTheme());
+  
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   return (
-    <div className="relative min-h-screen">
-      <div className="absolute inset-0 bg-[url('/my-durves.png')] bg-center bg-cover opacity-50" />
-      
-      <div className="relative text-white">
-        <header>
-          <Menu />
-        </header>
-        <FileUpload />
-        <footer>
-          <div className="flex h-[5vh] justify-center items-center h-16 border-gray-800 shadow-2xl bg-black bg-opacity-65  text-white">
-            <p className="opacity-100 drop-shadow-xl">Data Visualise App | by Mikołaj Karla</p>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
+      <Navbar theme={theme} setTheme={setTheme} />
+      <main className="container mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto">
+          <FileUpload />
+        </div>
+      </main>
+      <footer className="border-t border-border/50 bg-card/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-center">
+            <p className="text-sm text-muted-foreground font-medium">
+              Data Visualise App • Created by{" "}
+              <span className="text-primary font-semibold">Mikołaj Karla</span>
+            </p>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </div>
   );
 }
