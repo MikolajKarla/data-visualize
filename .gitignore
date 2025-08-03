@@ -23,7 +23,7 @@ yarn.lock
 
 # Environment variable files
 *.env
-.env.*
+.env.
 
 # Log files
 *.log
