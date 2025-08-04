@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 import FileUpload from "@/components/FileUpload";
 import Navbar from "@/components/Navbar";
 
-function getInitialTheme() {
+function getInitialTheme(): "dark" | "light" {
   if (typeof window === "undefined") return "dark";
-  return localStorage.getItem("theme") || "dark";
+  const stored = localStorage.getItem("theme");
+  return stored === "light" ? "light" : "dark";
 }
 
 export default function Home() {
@@ -19,7 +20,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
-      <Navbar theme={theme} setTheme={setTheme} />
+      <Navbar theme = {theme} setTheme={setTheme} />
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           <FileUpload />
