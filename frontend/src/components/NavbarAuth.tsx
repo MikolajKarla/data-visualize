@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Settings, User, Moon, Sun, BarChart3, LogOut, LogIn } from "lucide-react";
@@ -15,6 +15,11 @@ type HeaderProps = {
 const Header = ({ theme, setTheme }: HeaderProps) => {
   const { user, isAuthenticated, logout } = useAuth();
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -86,7 +91,13 @@ const Header = ({ theme, setTheme }: HeaderProps) => {
               onClick={toggleTheme}
               className="h-9 w-9 rounded-xl hover:bg-accent text-muted-foreground hover:text-foreground transition-all duration-200"
             >
-              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+              {!mounted ? (
+                <div className="w-[18px] h-[18px]" />
+              ) : theme === "light" ? (
+                <Moon size={18} />
+              ) : (
+                <Sun size={18} />
+              )}
             </Button>
 
             {isAuthenticated ? (
@@ -101,7 +112,7 @@ const Header = ({ theme, setTheme }: HeaderProps) => {
                   className="gap-2 rounded-xl"
                 >
                   <LogOut size={16} />
-                  <span className="hidden sm:inline ">Wyloguj</span>
+                  <span className="hidden sm:inline">Wyloguj</span>
                 </Button>
               </div>
             ) : (
@@ -132,3 +143,5 @@ const Header = ({ theme, setTheme }: HeaderProps) => {
     </header>
   );
 };
+
+export default Header;

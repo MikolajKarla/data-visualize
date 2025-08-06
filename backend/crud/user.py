@@ -1,9 +1,13 @@
 # backend/crud/user.py
-from typing import Optional, List
+from typing import Optional, List, TYPE_CHECKING
 from sqlmodel import Session, select
-from database.models.user import User, get_password_hash, verify_password
+from database.models.user import User
 from database.models.profile import Profile
 from database.models.settings import Settings
+from auth.security import get_password_hash, verify_password
+
+if TYPE_CHECKING:
+    from schemas.user import UserCreate
 
 # --- Funkcje CRUD dla Użytkowników ---
 
@@ -40,6 +44,28 @@ def authenticate_user(session: Session, email: str, password: str) -> Optional[U
         return None
     if not verify_password(password, user.hashed_password):
         return None
+    return user
+
+def create_user_with_profile_and_settings(session: Session, user_data: "UserCreate") -> User:
+    """
+    Creates a user with associated profile and settings.
+    """
+    hashed_password = get_password_hash(user_data.password)
+    user = User(email=user_data.email, hashed_password=hashed_password)
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    profile = Profile(user_id=user.id, first_name=user_data.first_name)
+    settings = Settings(user_id=user.id)
+
+    session.add(profile)
+    session.add(settings)
+    session.commit()
+    session.refresh(profile)
+    session.refresh(settings)
+
     return user
 
 def get_user_data_with_relations(session: Session, user_id: int) -> Optional[User]:
