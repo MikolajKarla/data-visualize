@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/lib/auth'
-import { User, Settings, Camera } from 'lucide-react'
+import { User, Camera } from 'lucide-react'
 
 export default function ProfilePage() {
   const { user, isAuthenticated, refreshUser } = useAuth()
@@ -61,13 +61,13 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900">Profil użytkownika</h1>
-            <p className="text-gray-600">Zarządzaj swoimi informacjami osobistymi</p>
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Profil użytkownika</h1>
+            <p className="text-gray-600 dark:text-gray-300">Zarządzaj swoimi informacjami osobistymi</p>
           </div>
 
           {/* Profile Content */}
@@ -78,16 +78,16 @@ export default function ProfilePage() {
                 <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                   <User className="w-12 h-12 text-white" />
                 </div>
-                <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-white rounded-full shadow-md border border-gray-200 flex items-center justify-center hover:bg-gray-50">
-                  <Camera className="w-4 h-4 text-gray-600" />
+                <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-white dark:bg-gray-700 rounded-full shadow-md border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <Camera className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                 </button>
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {user.profile?.first_name || 'Użytkownik'} {user.profile?.last_name || ''}
                 </h2>
-                <p className="text-gray-600">{user.email}</p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-gray-600 dark:text-gray-300">{user.email}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Członek od {new Date().toLocaleDateString('pl-PL')}
                 </p>
               </div>
@@ -97,7 +97,7 @@ export default function ProfilePage() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Imię
                   </label>
                   <Input
@@ -105,10 +105,11 @@ export default function ProfilePage() {
                     onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
                     disabled={!isEditing}
                     placeholder="Wprowadź imię"
+                    className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Nazwisko
                   </label>
                   <Input
@@ -116,26 +117,27 @@ export default function ProfilePage() {
                     onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
                     disabled={!isEditing}
                     placeholder="Wprowadź nazwisko"
+                    className="bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email
                 </label>
                 <Input
                   value={user.email}
                   disabled
-                  className="bg-gray-50"
+                  className="bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Email nie może być zmieniony
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Bio
                 </label>
                 <textarea
@@ -143,27 +145,28 @@ export default function ProfilePage() {
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                   disabled={!isEditing}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 dark:disabled:bg-gray-700 disabled:text-gray-500 dark:disabled:text-gray-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Opowiedz coś o sobie..."
                 />
               </div>
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200">
+            <div className="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
               {isEditing ? (
                 <>
                   <Button
                     variant="outline"
                     onClick={() => setIsEditing(false)}
                     disabled={isLoading}
+                    className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
                   >
                     Anuluj
                   </Button>
                   <Button
                     onClick={handleSave}
                     disabled={isLoading}
-                    className="bg-blue-600 hover:bg-blue-700"
+                    className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
                   >
                     {isLoading ? 'Zapisywanie...' : 'Zapisz zmiany'}
                   </Button>
@@ -171,7 +174,7 @@ export default function ProfilePage() {
               ) : (
                 <Button
                   onClick={() => setIsEditing(true)}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
                 >
                   Edytuj profil
                 </Button>

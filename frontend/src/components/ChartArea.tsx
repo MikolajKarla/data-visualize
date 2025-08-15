@@ -1,7 +1,8 @@
 import { useDroppable } from '@dnd-kit/core';
 import React, { useEffect, useState } from 'react';
-import { Maximize2, Minimize2, X, BarChart3, Loader2, AlertCircle } from 'lucide-react';
+import { Maximize2, Minimize2, X, BarChart3, Loader2, AlertCircle, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
+import { useAuth } from '@/lib/auth';
 
 interface ChartAreaProps {
   id: string;
@@ -17,6 +18,7 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
   const [chartError, setChartError] = useState<string | null>(null);
   const [isFullScreen, setFullScreen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const { token } = useAuth();
 
   const handleRemoveColumn = (col: string) => {
     onDeleteColumn(col);
@@ -46,7 +48,10 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
       
       fetch(`http://127.0.0.1:8000/chart/`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ chartType, columns })
       })
         .then(async response => {
@@ -81,7 +86,7 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
       setChartImageUrl(null);
       setChartError(null);
     }
-  }, [droppedColumns, chartType, id]);
+  }, [droppedColumns, chartType, id, token]);
 
   const getChartTitle = () => {
     const chartIndex = parseInt(id.replace('chart', ''));
@@ -103,19 +108,25 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
           </div>
           
           {/* Chart Type Selector */}
-          <select
-            className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-            value={chartType}
-            onChange={e => setChartType(e.target.value)}
-          >
-            <option value="" disabled>Select chart type</option>
-            <option value="bar">Bar Chart</option>
-            <option value="line">Line Chart</option>
-            <option value="pie">Pie Chart</option>
-            <option value="scatter">Scatter Plot</option>
-            <option value="area">Area Chart</option>
-            <option value="radar">Radar Chart</option>
-          </select>
+          <div className="relative">
+            <select
+              className="w-full bg-background border border-border rounded-lg pl-3 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none"
+              value={chartType}
+              onChange={e => setChartType(e.target.value)}
+            >
+              <option value="" disabled>Select chart type</option>
+              <option value="bar">Bar Chart</option>
+              <option value="line">Line Chart</option>
+              <option value="pie">Pie Chart</option>
+              <option value="scatter">Scatter Plot</option>
+              <option value="area">Area Chart</option>
+              <option value="radar">Radar Chart</option>
+            </select>
+            <ChevronDown 
+              size={16} 
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none" 
+            />
+          </div>
         </div>
 
         {/* Droppable Area */}

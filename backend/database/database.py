@@ -6,6 +6,8 @@ import os
 from database.models.user import User
 from database.models.profile import Profile
 from database.models.settings import Settings
+from database.models.project import Project
+from database.models.chart import Chart
 
 load_dotenv()
 

@@ -32,9 +32,10 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 def decode_access_token(token: str):
     try:
         payload = jwt.decode(token, os.getenv('JWT_SECRET_KEY'), algorithms=[os.getenv("ALGORITHM")])
-        # Możesz sprawdzić claimy, np. czy token nie wygasł (exp jest sprawdzane automatycznie)
+        print(f"Token decoded successfully: {payload}")  # Debug log
         return payload
-    except JWTError:
+    except JWTError as e:
+        print(f"JWT Error: {e}")  # Debug log
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",

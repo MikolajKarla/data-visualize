@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Button } from "./ui/button";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import Columns from "./Columns";
+import Columns from "./Column";
 import ChartArea from "./ChartArea";
 import { FileText, ArrowLeft } from "lucide-react";
 

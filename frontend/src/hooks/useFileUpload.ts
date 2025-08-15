@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useAuth } from "@/lib/auth";
 
 export const useFileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -8,6 +9,7 @@ export const useFileUpload = () => {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { token } = useAuth();
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -58,6 +60,11 @@ export const useFileUpload = () => {
 
   const handleUpload = async () => {
     if (!selectedFile) return;
+    if (!token) {
+      console.error("No authentication token found");
+      return;
+    }
+    
     setLoading(true);
     setUploadSuccess(false);
 
@@ -67,8 +74,15 @@ export const useFileUpload = () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/upload/", {
         method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
         body: formData,
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const result = await response.json();
       if (result.message === "File uploaded successfully") {

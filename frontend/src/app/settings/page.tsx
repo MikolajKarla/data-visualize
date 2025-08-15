@@ -68,11 +68,11 @@ export default function SettingsPage() {
     description: string
     children: React.ReactNode 
   }) => (
-    <div className="p-6 border-b border-gray-200 last:border-b-0">
+    <div className="p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-medium text-gray-900">{title}</h3>
-          <p className="text-sm text-gray-600 mt-1">{description}</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">{title}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>
         </div>
         <div className="ml-6">
           {children}
@@ -85,7 +85,7 @@ export default function SettingsPage() {
     <button
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-        checked ? 'bg-blue-600' : 'bg-gray-200'
+        checked ? 'bg-blue-600 dark:bg-blue-700' : 'bg-gray-200 dark:bg-gray-600'
       }`}
     >
       <span
@@ -97,22 +97,22 @@ export default function SettingsPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-3">
-              <Settings className="w-6 h-6 text-gray-600" />
+              <Settings className="w-6 h-6 text-gray-600 dark:text-gray-300" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Ustawienia</h1>
-                <p className="text-gray-600">Zarządzaj preferencjami swojego konta</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Ustawienia</h1>
+                <p className="text-gray-600 dark:text-gray-300">Zarządzaj preferencjami swojego konta</p>
               </div>
             </div>
           </div>
 
           {/* Settings Sections */}
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {/* Appearance */}
             <SettingSection
               title="Wygląd"
@@ -122,7 +122,7 @@ export default function SettingsPage() {
                 <select
                   value={settings.theme}
                   onChange={(e) => setSettings({ ...settings, theme: e.target.value })}
-                  className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
                   <option value="light">Jasny</option>
                   <option value="dark">Ciemny</option>
@@ -130,7 +130,7 @@ export default function SettingsPage() {
                 </select>
                 {settings.theme === 'light' && <Sun className="w-5 h-5 text-yellow-500" />}
                 {settings.theme === 'dark' && <Moon className="w-5 h-5 text-blue-500" />}
-                {settings.theme === 'system' && <Palette className="w-5 h-5 text-gray-500" />}
+                {settings.theme === 'system' && <Palette className="w-5 h-5 text-gray-500 dark:text-gray-400" />}
               </div>
             </SettingSection>
 
@@ -143,13 +143,13 @@ export default function SettingsPage() {
                 <select
                   value={settings.language}
                   onChange={(e) => setSettings({ ...settings, language: e.target.value })}
-                  className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
                   <option value="pl">Polski</option>
                   <option value="en">English</option>
                   <option value="de">Deutsch</option>
                 </select>
-                <Globe className="w-5 h-5 text-gray-500" />
+                <Globe className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               </div>
             </SettingSection>
 
@@ -161,8 +161,8 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <Bell className="w-5 h-5 text-gray-500" />
-                    <span className="text-sm font-medium text-gray-900">Wszystkie powiadomienia</span>
+                    <Bell className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">Wszystkie powiadomienia</span>
                   </div>
                   <Toggle
                     checked={settings.notifications_enabled}
@@ -171,7 +171,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div className="flex items-center justify-between ml-8">
-                  <span className="text-sm text-gray-700">Powiadomienia email</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Powiadomienia email</span>
                   <Toggle
                     checked={settings.email_notifications}
                     onChange={(checked) => setSettings({ ...settings, email_notifications: checked })}
@@ -179,7 +179,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div className="flex items-center justify-between ml-8">
-                  <span className="text-sm text-gray-700">Powiadomienia push</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Powiadomienia push</span>
                   <Toggle
                     checked={settings.push_notifications}
                     onChange={(checked) => setSettings({ ...settings, push_notifications: checked })}
@@ -187,7 +187,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div className="flex items-center justify-between ml-8">
-                  <span className="text-sm text-gray-700">Emaile marketingowe</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Emaile marketingowe</span>
                   <Toggle
                     checked={settings.marketing_emails}
                     onChange={(checked) => setSettings({ ...settings, marketing_emails: checked })}
@@ -220,12 +220,12 @@ export default function SettingsPage() {
           </div>
 
           {/* Save Button */}
-          <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+          <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
             <div className="flex justify-end">
               <Button
                 onClick={handleSave}
                 disabled={isLoading}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
               >
                 {isLoading ? 'Zapisywanie...' : 'Zapisz ustawienia'}
               </Button>

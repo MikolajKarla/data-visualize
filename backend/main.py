@@ -27,9 +27,9 @@ def on_startup():
 # Allow CORS for frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Change this to your frontend URL for better security
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Specific frontend URLs
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -38,23 +38,35 @@ data = pd.DataFrame()
 
 # Authentication dependency
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db = Depends(get_session)):
-    token = credentials.credentials
-    payload = decode_access_token(token)
-    user_id = payload.get("sub")
-    if user_id is None:
+    try:
+        token = credentials.credentials
+        print(f"Received token: {token[:20]}...") # Debug log (pokazuje tylko pierwsze 20 znaków)
+        payload = decode_access_token(token)
+        user_id = payload.get("sub")
+        print(f"User ID from token: {user_id}")  # Debug log
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        user = get_user_by_id(db, int(user_id))
+        if user is None:
+            print(f"User not found for ID: {user_id}")  # Debug log
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User not found",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        print(f"User authenticated: {user.email}")  # Debug log
+        return user
+    except Exception as e:
+        print(f"Authentication error: {e}")  # Debug log
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
+            detail="Authentication failed",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user = get_user_by_id(db, int(user_id))
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not found",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
 
 # Authentication routes
 @app.post("/auth/register", response_model=UserRead)
@@ -94,6 +106,16 @@ async def login(user_credentials: UserLogin, db = Depends(get_session)):
 @app.get("/auth/me", response_model=UserRead)
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+# Test endpoint without authentication
+@app.get("/test/")
+async def test_endpoint():
+    return {"message": "Test endpoint works - no authentication required"}
+
+# Test endpoint with authentication
+@app.get("/test/auth")
+async def test_auth_endpoint(current_user: User = Depends(get_current_user)):
+    return {"message": f"Authentication works for user: {current_user.email}"}
 
 # Protected file upload route
 @app.post("/upload/")
