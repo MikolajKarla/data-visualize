@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Settings, User, BarChart3, LogOut, LogIn, ChevronDown } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { usePathname } from "next/navigation";
-import ThemeSwitcher from "./ThemeSwitcher";
+import ThemeSwitcher from "./ui/ThemeSwitcher";
 
 
 

@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useAuth } from "@/lib/auth";
+import toast from "react-hot-toast";
 
 export const useFileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -11,13 +12,43 @@ export const useFileUpload = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { token } = useAuth();
 
+  const validateFile = (file: File): string | null => {
+    // Check file type
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+      return "Please select a CSV file only.";
+    }
+    
+    // Check file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+    if (file.size > maxSize) {
+      return "File size must be less than 10MB.";
+    }
+    
+    // Check if file is empty
+    if (file.size === 0) {
+      return "The selected file is empty.";
+    }
+    
+    return null;
+  };
+
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      
+      // Validate file
+      const error = validateFile(file);
+      if (error) {
+        toast.error(error);
+        return;
+      }
+      
       setFileProcessing(true);
       // Simulate file processing delay (you can add actual file validation here)
       await new Promise(resolve => setTimeout(resolve, 800));
-      setSelectedFile(event.target.files[0]);
+      setSelectedFile(file);
       setFileProcessing(false);
+      toast.success("File selected successfully!");
     }
   };
 
@@ -41,11 +72,21 @@ export const useFileUpload = () => {
     if (loading || fileProcessing) return; // Don't allow drop during loading
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
+      
+      // Validate file
+      const error = validateFile(file);
+      if (error) {
+        toast.error(error);
+        return;
+      }
+      
       setFileProcessing(true);
       // Simulate file processing delay (you can add actual file validation here)
       await new Promise(resolve => setTimeout(resolve, 800));
-      setSelectedFile(e.dataTransfer.files[0]);
+      setSelectedFile(file);
       setFileProcessing(false);
+      toast.success("File selected successfully!");
     }
   };
 
@@ -61,7 +102,7 @@ export const useFileUpload = () => {
   const handleUpload = async () => {
     if (!selectedFile) return;
     if (!token) {
-      console.error("No authentication token found");
+      toast.error("Authentication required. Please sign in to upload files.");
       return;
     }
     
@@ -81,20 +122,32 @@ export const useFileUpload = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (response.status === 401) {
+          throw new Error("Authentication failed. Please sign in again.");
+        } else if (response.status === 413) {
+          throw new Error("File too large. Please select a smaller file.");
+        } else if (response.status === 422) {
+          throw new Error("Invalid file format. Please upload a valid CSV file.");
+        } else {
+          throw new Error(`Upload failed with status ${response.status}. Please try again.`);
+        }
       }
 
       const result = await response.json();
       if (result.message === "File uploaded successfully") {
         setColumns(result.columns);
         setUploadSuccess(true);
+        toast.success("File uploaded successfully! Ready to create visualizations.");
         // Small delay to show success state before transitioning
         setTimeout(() => {
           // The component will automatically show DataVisualize when columns.length > 0
         }, 1000);
+      } else {
+        throw new Error(result.message || "Upload failed. Please try again.");
       }
     } catch (error) {
       console.error("Error uploading file:", error);
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred during upload.");
     } finally {
       setLoading(false);
     }

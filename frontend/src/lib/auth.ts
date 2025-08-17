@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import toast from 'react-hot-toast'
 
 interface User {
   id: number
@@ -22,7 +23,7 @@ interface AuthState {
   token: string | null
   isAuthenticated: boolean
   isLoading: boolean
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string, skipToast?: boolean) => Promise<void>
   register: (email: string, password: string, firstName?: string) => Promise<void>
   logout: () => void
   setUser: (user: User) => void
@@ -39,7 +40,7 @@ export const useAuth = create<AuthState>()(
       isAuthenticated: false,
       isLoading: false,
 
-      login: async (email: string, password: string) => {
+      login: async (email: string, password: string, skipToast = false) => {
         set({ isLoading: true })
         try {
           const response = await fetch(`${API_URL}/auth/login`, {
@@ -60,8 +61,16 @@ export const useAuth = create<AuthState>()(
 
           // Fetch user data
           await get().refreshUser()
+          
+          // Show success toast only if not skipped
+          if (!skipToast) {
+            toast.success('Login successful! Welcome back.')
+          }
         } catch (error) {
           console.error('Login error:', error)
+          if (!skipToast) {
+            toast.error(error instanceof Error ? error.message : 'Login failed. Please try again.')
+          }
           throw error
         } finally {
           set({ isLoading: false })
@@ -88,10 +97,14 @@ export const useAuth = create<AuthState>()(
             throw new Error(error.detail || 'Registration failed')
           }
 
-          // Auto login after registration
-          await get().login(email, password)
+          // Show registration success toast
+          toast.success('Registration successful! Welcome to the app!')
+          
+          // Auto login after registration (skip login toast)
+          await get().login(email, password, true)
         } catch (error) {
           console.error('Registration error:', error)
+          toast.error(error instanceof Error ? error.message : 'Registration failed. Please try again.')
           throw error
         } finally {
           set({ isLoading: false })
@@ -104,6 +117,7 @@ export const useAuth = create<AuthState>()(
           token: null, 
           isAuthenticated: false 
         })
+        toast.success('Logged out successfully. See you next time!')
       },
 
       setUser: (user: User) => {
@@ -129,6 +143,7 @@ export const useAuth = create<AuthState>()(
           set({ user: userData })
         } catch (error) {
           console.error('Refresh user error:', error)
+          toast.error('Session expired. Please log in again.')
           get().logout()
         }
       },

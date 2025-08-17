@@ -6,35 +6,34 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/lib/auth'
+import toast from 'react-hot-toast'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [firstName, setFirstName] = useState('')
-  const [error, setError] = useState('')
   const { register, isLoading } = useAuth()
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
     
     if (password !== confirmPassword) {
-      setError('Hasła nie są identyczne')
+      toast.error('Hasła nie są identyczne')
       return
     }
 
     if (password.length < 6) {
-      setError('Hasło musi mieć co najmniej 6 znaków')
+      toast.error('Hasło musi mieć co najmniej 6 znaków')
       return
     }
     
     try {
       await register(email, password, firstName)
       router.push('/')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed')
+    } catch {
+      // Toast error is handled in auth store
     }
   }
 
@@ -111,12 +110,6 @@ export default function RegisterPage() {
               />
             </div>
           </div>
-
-          {error && (
-            <div className="text-red-600 dark:text-red-400 text-sm text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-md border border-red-200 dark:border-red-800">
-              {error}
-            </div>
-          )}
 
           <Button
             type="submit"
