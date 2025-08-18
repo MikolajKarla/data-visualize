@@ -1,25 +1,126 @@
-from fastapi import FastAPI, File, Response, UploadFile
+from fastapi import FastAPI, File, Response, UploadFile, Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from io import BytesIO
+from datetime import timedelta
 
-from pydantic import BaseModel, Field
-from ChartVisualize import create_plot 
+from crud.chart import create_plot 
+from schemas.chart import ChartRequest, Columns
+
+from database.database import get_session, create_db_and_tables # Database setup
+from database.models.user import User # User model
+from auth.security import verify_password, create_access_token, decode_access_token # JWT functions
+from schemas.user import UserLogin, Token, UserRead, UserCreate # Pydantic schemas
+from crud.user import create_user_with_profile_and_settings, authenticate_user, get_user_by_email, get_user_by_id # CRUD functions
+
+# Initialize security
+security = HTTPBearer()
+
 app = FastAPI()
+
+# Create database tables on startup
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
 # Allow CORS for frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Change this to your frontend URL for better security
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Specific frontend URLs
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
-data =pd.DataFrame() 
 
+# Global data storage (consider using Redis for production)
+data = pd.DataFrame()
+
+# Authentication dependency
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db = Depends(get_session)):
+    try:
+        token = credentials.credentials
+        print(f"Received token: {token[:20]}...") # Debug log (pokazuje tylko pierwsze 20 znaków)
+        payload = decode_access_token(token)
+        user_id = payload.get("sub")
+        print(f"User ID from token: {user_id}")  # Debug log
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        user = get_user_by_id(db, int(user_id))
+        if user is None:
+            print(f"User not found for ID: {user_id}")  # Debug log
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User not found",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        print(f"User authenticated: {user.email}")  # Debug log
+        return user
+    except Exception as e:
+        print(f"Authentication error: {e}")  # Debug log
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication failed",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+# Authentication routes
+@app.post("/auth/register", response_model=UserRead)
+async def register(user: UserCreate, db = Depends(get_session)):
+    # Check if user already exists
+    existing_user = get_user_by_email(db, user.email)
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email already registered"
+        )
+    
+    # Create new user
+    new_user = create_user_with_profile_and_settings(db, user)
+    return new_user
+
+@app.post("/auth/login", response_model=Token)
+async def login(user_credentials: UserLogin, db = Depends(get_session)):
+    # Authenticate user
+    user = authenticate_user(db, user_credentials.email, user_credentials.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Create access token
+    access_token_expires = timedelta(minutes=30)  # Or from environment variable
+    access_token = create_access_token(
+        data={"sub": str(user.id)},
+        expires_delta=access_token_expires
+    )
+    
+    return {"access_token": access_token, "token_type": "bearer"}
+
+@app.get("/auth/me", response_model=UserRead)
+async def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
+
+# Test endpoint without authentication
+@app.get("/test/")
+async def test_endpoint():
+    return {"message": "Test endpoint works - no authentication required"}
+
+# Test endpoint with authentication
+@app.get("/test/auth")
+async def test_auth_endpoint(current_user: User = Depends(get_current_user)):
+    return {"message": f"Authentication works for user: {current_user.email}"}
+
+# Protected file upload route
 @app.post("/upload/")
-async def upload_file(file: UploadFile = File(...)):
-    file_location = f"uploads/{file.filename}"  # Save in 'uploads' directory
+async def upload_file(file: UploadFile = File(...), current_user: User = Depends(get_current_user)):
+    file_location = f"uploads/{file.filename}"  # Save in 'uploads' directory (development only)
     with open(file_location, "wb") as buffer:
         buffer.write(await file.read())
     columns = pd.read_csv(file_location).columns.tolist()
@@ -28,15 +129,9 @@ async def upload_file(file: UploadFile = File(...)):
     print(columns)
     return {"columns": columns, "message": "File uploaded successfully"}
 
-class Columns(BaseModel):
-    x_column: list[str] = Field(..., min_items=1)
-    y_columns: list[str] = Field(..., min_items=1)
-class ChartRequest(BaseModel):
-    chartType: str
-    columns: Columns
-
+# Protected chart creation route
 @app.post("/chart/")
-async def create_chart_endpoint(chart_request: ChartRequest):
+async def create_chart_endpoint(chart_request: ChartRequest, current_user: User = Depends(get_current_user)):
     chart_type = chart_request.chartType 
     columns = chart_request.columns    
     global data

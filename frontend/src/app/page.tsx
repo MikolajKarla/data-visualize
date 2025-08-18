@@ -1,30 +1,18 @@
-"use client";
 
-import React, { useEffect, useState } from "react";
 import FileUpload from "@/components/FileUpload";
-import Navbar from "@/components/Navbar";
-
-function getInitialTheme() {
-  if (typeof window === "undefined") return "dark";
-  return localStorage.getItem("theme") || "dark";
-}
+import NavbarAuth from "@/components/Navbar";
 
 export default function Home() {
-  const [theme, setTheme] = useState(getInitialTheme());
-  
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
-      <Navbar theme={theme} setTheme={setTheme} />
+      <NavbarAuth />
+
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           <FileUpload />
         </div>
       </main>
+
       <footer className="border-t border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-center">

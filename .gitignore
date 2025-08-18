@@ -5,6 +5,9 @@ frontend/node_modules
 backend/venv
 
 # Python bytecode cache
+__pycache__/
+*.py[cod]
+*$py.class
 backend/__pycache__
 backend/uploads
 # Next.js build output

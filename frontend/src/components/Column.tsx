@@ -10,6 +10,8 @@ function Columns({ element }: { element: string }) {
 
   const style = {
     transform: CSS.Translate.toString(transform),
+    zIndex: isDragging ? 9999 : 'auto',
+    position: isDragging ? 'relative' as const : 'static' as const,
   };
 
   return (
@@ -18,7 +20,7 @@ function Columns({ element }: { element: string }) {
       style={style}
       className={`group relative bg-card border border-border rounded-xl p-2 lg:p-3 transition-all duration-200 ${
         isDragging 
-          ? "cursor-grabbing shadow-lg scale-105 z-999  bg-accent border-primary" 
+          ? "cursor-grabbing shadow-2xl scale-105 bg-accent border-primary opacity-90" 
           : "cursor-grab hover:bg-accent/50 hover:border-primary/30 hover:shadow-md"
       }`}
     >

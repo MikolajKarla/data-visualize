@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Button } from "./ui/button";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import Columns from "./Columns";
+import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from "@dnd-kit/core";
+import Columns from "./Column";
 import ChartArea from "./ChartArea";
-import { FileText, ArrowLeft } from "lucide-react";
+import { FileText, ArrowLeft, Database } from "lucide-react";
 
 interface DataVisualizeProps {
   file: File;
@@ -22,6 +22,12 @@ const DataVisualize: React.FC<DataVisualizeProps> = ({ file, columns, onDelete }
     chart3: [],
     chart4: [],
   });
+  const [activeDragItem, setActiveDragItem] = useState<string | null>(null);
+
+
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveDragItem(event.active.id as string);
+  }, []);
 
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
@@ -42,6 +48,9 @@ const DataVisualize: React.FC<DataVisualizeProps> = ({ file, columns, onDelete }
       }
       return prev;
     });
+    
+    // Reset active drag item
+    setActiveDragItem(null);
   }, []);
 
   const handleDeleteColumn = (chartId: string, column: string) => {
@@ -55,7 +64,7 @@ const DataVisualize: React.FC<DataVisualizeProps> = ({ file, columns, onDelete }
 
   return (
     <div className="w-full min-h-screen bg-background">
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <div className="flex flex-col lg:flex-row min-h-screen">
           {/* Sidebar */}
           <div className="w-full lg:w-80 bg-card border-b lg:border-b-0 lg:border-r border-border flex flex-col max-h-[40vh] lg:max-h-none">
@@ -129,6 +138,21 @@ const DataVisualize: React.FC<DataVisualizeProps> = ({ file, columns, onDelete }
             </div>
           </div>
         </div>
+        
+        <DragOverlay>
+          {activeDragItem ? (
+            <div className="bg-accent border border-primary rounded-xl p-2 lg:p-3 shadow-2xl opacity-90 rotate-3">
+              <div className="flex items-center gap-2 lg:gap-3">
+                <div className="p-1 lg:p-1.5 bg-primary/10 rounded-lg">
+                  <Database size={14} className="text-primary lg:w-4 lg:h-4" />
+                </div>
+                <p className="font-medium text-foreground text-xs lg:text-sm">
+                  {activeDragItem}
+                </p>
+              </div>
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </div>
   );
