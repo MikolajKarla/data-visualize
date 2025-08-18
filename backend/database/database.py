@@ -1,5 +1,6 @@
 from sqlmodel import create_engine, Session, SQLModel
 from sqlalchemy.orm import sessionmaker
+
 from dotenv import load_dotenv
 import os
 #DB Models
@@ -15,6 +16,7 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://username:password@localhost/dbname")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 def create_db_and_tables():
     print("Tworzenie tabel w bazie danych...")

@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, ForeignKey
 if TYPE_CHECKING:
     from database.models.user import User
 
+
 class Profile(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     first_name: Optional[str] = None

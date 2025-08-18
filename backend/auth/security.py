@@ -36,6 +36,7 @@ def decode_access_token(token: str):
         return payload
     except JWTError as e:
         print(f"JWT Error: {e}")  # Debug log
+
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
