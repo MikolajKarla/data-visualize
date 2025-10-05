@@ -41,7 +41,7 @@ export default function ThemeSwitcher() {
       {resolvedTheme === "dark" ? (
         <FiSun className="text-yellow-400 transition-transform duration-200 scale-100 hover:rotate-12" />
       ) : (
-        <FiMoon className="text-blue-500 transition-transform duration-200 scale-100 hover:-rotate-12" />
+        <FiMoon className="transition-transform duration-200 scale-100 hover:-rotate-12 focus:text-white" />
       )}
     </Button>
   );

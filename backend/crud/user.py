@@ -1,10 +1,16 @@
 # backend/crud/user.py
 from typing import Optional, List, TYPE_CHECKING
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlmodel import Session, select
+from database.database import get_session
+
+# Initialize security
+security = HTTPBearer()
 from database.models.user import User
 from database.models.profile import Profile
 from database.models.settings import Settings
-from auth.security import get_password_hash, verify_password
+from auth.security import decode_access_token, get_password_hash, verify_password
 
 if TYPE_CHECKING:
     from schemas.user import UserCreate
@@ -110,6 +116,40 @@ def update_profile(
     return profile
 
 # --- Funkcje CRUD dla Ustawień ---
+
+    
+# Authentication dependency
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db = Depends(get_session)):
+    try:
+        token = credentials.credentials
+        print(f"Received token: {token[:20]}...") # Debug log (pokazuje tylko pierwsze 20 znaków)
+        payload = decode_access_token(token)
+        user_id = payload.get("sub")
+        print(f"User ID from token: {user_id}")  # Debug log
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        user = get_user_by_id(db, int(user_id))
+        if user is None:
+            print(f"User not found for ID: {user_id}")  # Debug log
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User not found",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        print(f"User authenticated: {user.email}")  # Debug log
+        return user
+    except Exception as e:
+        print(f"Authentication error: {e}")  # Debug log
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication failed",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
 
 def get_settings_by_user_id(session: Session, user_id: int) -> Optional[Settings]:
     """

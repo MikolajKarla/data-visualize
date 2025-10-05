@@ -41,8 +41,9 @@ const Header = () => {
           {/* Navigation Links */}
           {isAuthenticated && (
             <div className="hidden md:flex items-center gap-1">
-              
+              <a href="/projects" className=" transition duration-300 hover:scale-110 hover:translate-x-1 ease-in-out">
              Projekty
+              </a>
             </div>
           )}
 
