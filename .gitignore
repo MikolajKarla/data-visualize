@@ -4,12 +4,28 @@ frontend/node_modules
 # Backend virtual environment
 backend/venv
 
-# Python bytecode cache
+# Python bytecode cache and compiled files
 __pycache__/
 *.py[cod]
 *$py.class
-backend/__pycache__
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
 backend/uploads
+
+# Python specific patterns for all subdirectories
+**/auth/__pycache__/
+**/crud/__pycache__/
+**/database/__pycache__/
+**/database/models/__pycache__/
+**/schemas/__pycache__/
+
+# Python cache files by extension
+backend/**/*.cpython-*.pyc
+backend/**/*.pyc
 # Next.js build output
 frontend/.next
 
