@@ -95,7 +95,7 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
 
   return (
     <>
-      <div className="bg-card border border-border rounded-2xl shadow-lg flex flex-col h-full min-h-[300px] lg:min-h-[400px] overflow-hidden card-hover">
+      <div className="bg-card border border-border rounded-2xl shadow-lg flex flex-col h-full min-h-[300px] lg:min-h-[400px]  card-hover">
         {/* Header */}
         <div className="p-3 lg:p-4 border-b border-border bg-gradient-to-r from-primary/5 to-primary/10">
           <div className="flex items-center justify-between mb-3">
@@ -178,7 +178,7 @@ const ChartArea: React.FC<ChartAreaProps> = ({ id, droppedColumns, onDeleteColum
         </div>
 
         {/* Chart Display Area */}
-        <div className="flex-1 p-3 lg:p-4 bg-gradient-to-br from-background to-muted/20 min-h-[150px] lg:min-h-0">
+        <div className="flex-1 p-3 lg:p-4 bg-gradient-to-br from-background to-muted/20 min-h-[200px] lg:min-h-0">
           {loading ? (
             <div className="flex flex-col items-center justify-center h-full">
               <Loader2 className="w-6 lg:w-8 h-6 lg:h-8 animate-spin text-primary mb-3" />

@@ -4,11 +4,11 @@ import NavbarAuth from "@/components/Navbar";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20 flex flex-col">
       <NavbarAuth />
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-7xl mx-auto">
+      <main className="flex-1 w-full mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto h-full">
           <FileUpload />
         </div>
       </main>
@@ -18,6 +18,7 @@ export default function Home() {
           <div className="flex items-center justify-center">
             <p className="text-sm text-muted-foreground font-medium">
               Data Visualise App • Created by{" "}
+          
               <span className="text-primary font-semibold">Mikołaj Karla</span>
             </p>
           </div>

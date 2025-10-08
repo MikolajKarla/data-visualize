@@ -4,6 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Search } from 'lucide-react';
 import ProjectsGrid from './ProjectsGrid';
 import NewProjectModal from './NewProjectModal';
+import Navbar from '../Navbar';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth';
+    
 
 interface Project {
   id: number;
@@ -23,16 +27,41 @@ const ProjectsLayout: React.FC = () => {
   const [filterPublic, setFilterPublic] = useState<boolean | null>(null);
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
 
+  const { user, isAuthenticated } = useAuth();
+  const router = useRouter();
+  
+  // Redirect to login if not authenticated
+  useEffect(() => {  
+    if (!isAuthenticated) {
+      console.log('🚨 Redirecting to login - not authenticated');
+      router.push('/auth/login');
+    }
+  }, [isAuthenticated, router]);
+
   // Fetch projects from API
   useEffect(() => {
+    if (!isAuthenticated || !user) {
+      setLoading(false);
+      return;
+    }
+
     const fetchProjects = async () => {
       try {
         setLoading(true);
         // TODO: Replace with actual API call
-        const response = await fetch('/api/projects');
+        const response = await fetch(`/projects/user/${user.id}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        
         if (response.ok) {
           const data = await response.json();
+          console.log('Projects fetched:', data);
           setProjects(data);
+        } else {
+          console.error('Failed to fetch projects:', response.status);
         }
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -42,7 +71,8 @@ const ProjectsLayout: React.FC = () => {
     };
 
     fetchProjects();
-  }, []);
+  }, [isAuthenticated, user]);
+
 
   // Filter projects based on search term and public filter
   const filteredProjects = projects.filter(project => {
@@ -94,10 +124,13 @@ const ProjectsLayout: React.FC = () => {
     }
   };
 
+
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+      <Navbar />
+      <div className="flex flex-col md:flex-row md:items-center mt-6 md:justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground mb-2">
             Moje Projekty

@@ -10,7 +10,7 @@ from schemas.chart import ChartRequest
 from database.database import create_db_and_tables # Database setup
 from database.models.user import User # User model
 
-from routers import auth, test
+from routers import auth, test, projects
 
 app = FastAPI(
     docs_url="/docs",
@@ -62,7 +62,8 @@ async def create_chart_endpoint(chart_request: ChartRequest, current_user: User 
         return {"message": "Nie udało się wygenerować wykresu - nieznany błąd"}
 
 
-app.include_router(auth.router);
-app.include_router(test.router);
+app.include_router(auth.router)
+app.include_router(test.router)
+app.include_router(projects.router)
 
 

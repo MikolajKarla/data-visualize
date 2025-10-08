@@ -154,6 +154,15 @@ export const useAuth = create<AuthState>()(
         token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state) => {
+        // Initialize user data if token exists
+        if (state?.token && state?.isAuthenticated) {
+          // Don't block UI, just refresh user data in background
+          state.refreshUser().catch(() => {
+            // If refresh fails, user will be logged out automatically
+          })
+        }
+      },
     }
   )
 )
