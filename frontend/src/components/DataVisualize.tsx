@@ -4,7 +4,7 @@ import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from "@dnd-kit/
 import Columns from "./Column";
 import ChartArea from "./ChartArea";
 import { FileText, ArrowLeft, Database, Save, Globe, Eye } from "lucide-react";
-import { useAuth } from "@/lib/auth";
+import { useAuth, authenticatedFetch } from "@/lib/auth";
 import toast from "react-hot-toast";
 
 interface DataVisualizeProps {
@@ -83,13 +83,8 @@ const DataVisualize: React.FC<DataVisualizeProps> = ({ file, columns, onDelete }
 
     setSaving(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/projects/save', {
+      const response = await authenticatedFetch('/projects/save', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
         body: JSON.stringify({
           title: projectTitle,
           description: projectDescription || null,

@@ -32,6 +32,34 @@ interface AuthState {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
+// Helper function for authenticated API calls
+export const authenticatedFetch = async (url: string, options: RequestInit = {}) => {
+  const { token } = useAuth.getState()
+  
+  if (!token) {
+    throw new Error('No authentication token available')
+  }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+    ...options.headers,
+  }
+
+  const response = await fetch(`${API_URL}${url}`, {
+    ...options,
+    headers,
+  })
+
+  if (response.status === 401) {
+    // Token expired, logout user
+    useAuth.getState().logout()
+    throw new Error('Authentication expired')
+  }
+
+  return response
+}
+
 export const useAuth = create<AuthState>()(
   persist(
     (set, get) => ({

@@ -7,6 +7,7 @@ import NewProjectModal from './NewProjectModal';
 import Navbar from '../Navbar';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
+import { useProjectsAPI, Project as ProjectType } from '@/hooks/useProjectsAPI';
     
 
 interface Project {
@@ -29,15 +30,7 @@ const ProjectsLayout: React.FC = () => {
 
   const { user, isAuthenticated } = useAuth();
   const router = useRouter();
-  
-  // Redirect to login if not authenticated
-  useEffect(() => {  
-    if (!isAuthenticated) {
-      console.log('🚨 Redirecting to login - not authenticated');
-      router.push('/auth/login');
-    }
-  }, [isAuthenticated, router]);
-
+  const { fetchUserProjects } = useProjectsAPI();
   // Fetch projects from API
   useEffect(() => {
     if (!isAuthenticated || !user) {
@@ -46,23 +39,15 @@ const ProjectsLayout: React.FC = () => {
     }
 
     const fetchProjects = async () => {
+      if(user === null) {
+        router.push('/login');
+      }
       try {
         setLoading(true);
-        // TODO: Replace with actual API call
-        const response = await fetch(`/projects/user/${user.id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
-          },
-        });
         
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Projects fetched:', data);
-          setProjects(data);
-        } else {
-          console.error('Failed to fetch projects:', response.status);
-        }
+        const projects = await fetchUserProjects();
+        console.log('Projects fetched:', projects);
+        setProjects(projects);
       } catch (error) {
         console.error('Error fetching projects:', error);
       } finally {
